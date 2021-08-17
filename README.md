@@ -1,2 +1,2 @@
 # RecetteFlut
- Application pour les recette
+ Application pour decouvrir des recettes
