@@ -32,7 +32,9 @@ class CategoriesScreen extends StatelessWidget {
           height: 20,
           child: Text(
             'Made with love by Mohamed Jed Ben Njima',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor),
           ),
         )
       ],
