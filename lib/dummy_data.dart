@@ -57,7 +57,7 @@ const DUMMY_CATEGORIES = const [
 ];
 
 // ignore: non_constant_identifier_names
-List DUMMY_MEALS = [
+List<Meal> DUMMY_MEALS = [
   Meal(
     id: 'm1',
     categories: [

@@ -1,110 +1,136 @@
 import 'package:flutter/material.dart';
-import 'package:mealapp/widgets/main_drawer.dart';
 
-class FilterScreen extends StatefulWidget {
+import '../widgets/main_drawer.dart';
+
+class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters';
-  final void Function() saveFilters;
-  FilterScreen(this.saveFilters);
+
+  final Function saveFilters;
+  final Map<String, bool> currentFilters;
+
+  FiltersScreen(this.currentFilters, this.saveFilters);
 
   @override
-  _FilterScreenState createState() => _FilterScreenState();
+  _FiltersScreenState createState() => _FiltersScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FiltersScreenState extends State<FiltersScreen> {
   var _glutenFree = false;
   var _vegetarian = false;
   var _vegan = false;
   var _lactoseFree = false;
-  // ignore: unused_element
-  Widget _buildSwitchTile(
-      String title, String description, bool currentValue, Function update) {
+
+  @override
+  initState() {
+    _glutenFree = widget.currentFilters['gluten'] as bool;
+    _lactoseFree = widget.currentFilters['lactose'] as bool;
+    _vegetarian = widget.currentFilters['vegetarian'] as bool;
+    _vegan = widget.currentFilters['vegan'] as bool;
+    super.initState();
+  }
+
+  Widget _buildSwitchListTile(
+    String title,
+    String description,
+    bool currentValue,
+    Function updateValue,
+  ) {
     return SwitchListTile(
       title: Text(title),
       value: currentValue,
-      subtitle: Text(description),
-      onChanged: update as void Function(bool)?,
+      subtitle: Text(
+        description,
+      ),
+      onChanged: updateValue as void Function(bool),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Filters !'),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  final selectedFilter = {
-                    'gluten': _glutenFree,
-                    'lactose': _lactoseFree,
-                    'vegetarian': _vegetarian,
-                    'vegan': _vegan,
-                  };
-
-                  widget.saveFilters(selectedFilter);
-                },
-                icon: icon(Icons.save))
-          ],
-        ),
-        drawer: MainDrawer(),
-        body: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Adjust your meal selection.',
-                style: Theme.of(context).textTheme.headline6,
-              ),
+      appBar: AppBar(
+        title: Text('Your Filters'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              final selectedFilters = {
+                'gluten': _glutenFree,
+                'lactose': _lactoseFree,
+                'vegan': _vegan,
+                'vegetarian': _vegetarian,
+              };
+              widget.saveFilters(selectedFilters);
+            },
+          )
+        ],
+      ),
+      drawer: MainDrawer(),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Text(
+              'Adjust your meal selection.',
+              style: Theme.of(context).textTheme.headline6,
             ),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  _buildSwitchTile(
-                    'Gluten-Free',
-                    'only include gluten-free meals',
-                    _glutenFree,
-                    (newValue) {
-                      setState(() {
+          ),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                _buildSwitchListTile(
+                  'Gluten-free',
+                  'Only include gluten-free meals.',
+                  _glutenFree,
+                  (newValue) {
+                    setState(
+                      () {
                         _glutenFree = newValue;
-                      });
-                    },
-                  ),
-                  _buildSwitchTile(
-                    'Lactose-Free',
-                    'only include lactose-free meals',
-                    _lactoseFree,
-                    (newValue) {
-                      setState(() {
+                      },
+                    );
+                  },
+                ),
+                _buildSwitchListTile(
+                  'Lactose-free',
+                  'Only include lactose-free meals.',
+                  _lactoseFree,
+                  (newValue) {
+                    setState(
+                      () {
                         _lactoseFree = newValue;
-                      });
-                    },
-                  ),
-                  _buildSwitchTile(
-                    'Vegetarian',
-                    'only include vegetarian meals',
-                    _vegetarian,
-                    (newValue) {
-                      setState(() {
+                      },
+                    );
+                  },
+                ),
+                _buildSwitchListTile(
+                  'Vegetarian',
+                  'Only include vegetarian meals.',
+                  _vegetarian,
+                  (newValue) {
+                    setState(
+                      () {
                         _vegetarian = newValue;
-                      });
-                    },
-                  ),
-                  _buildSwitchTile(
-                    'Vegan',
-                    'only include Vegan meals',
-                    _vegan,
-                    (newValue) {
-                      setState(() {
+                      },
+                    );
+                  },
+                ),
+                _buildSwitchListTile(
+                  'Vegan',
+                  'Only include vegan meals.',
+                  _vegan,
+                  (newValue) {
+                    setState(
+                      () {
                         _vegan = newValue;
-                      });
-                    },
-                  )
-                ],
-              ),
+                      },
+                    );
+                  },
+                )
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
-
-  icon(IconData save) {}
 }
